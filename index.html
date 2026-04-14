@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de Seminarios</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+  :root {
+    --navy: #1a2744; --gold: #c9a84c; --gold-light: #e8c97a;
+    --cream: #f7f3ec; --red: #c0392b; --green: #1e7d4f;
+    --white: #ffffff; --shadow: 0 4px 20px rgba(26,39,68,0.13);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); min-height: 100vh; color: var(--navy); }
+
+  header { background: var(--navy); color: var(--white); padding: 26px 20px 20px; text-align: center; border-bottom: 4px solid var(--gold); }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 4px; }
+  header p { font-size: 0.82rem; color: var(--gold-light); font-weight: 300; }
+
+  .tabs { display: flex; background: var(--navy); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 10; }
+  .tab-btn { flex: 1; padding: 11px 6px; background: none; border: none; color: #8899bb; font-family: 'Source Sans 3', sans-serif; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(201,168,76,0.07); }
+
+  .view { display: none; padding: 18px 15px; max-width: 580px; margin: 0 auto; }
+  .view.active { display: block; }
+
+  .card { background: var(--white); border-radius: 12px; padding: 18px; box-shadow: var(--shadow); margin-bottom: 14px; }
+  .card h2 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--navy); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); }
+
+  .field { margin-bottom: 13px; }
+  .field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--navy); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .field input { width: 100%; padding: 10px 13px; border: 2px solid #dde3f0; border-radius: 8px; font-family: 'Source Sans 3', sans-serif; font-size: 0.93rem; color: var(--navy); transition: border-color 0.2s; }
+  .field input:focus { outline: none; border-color: var(--gold); }
+
+  .sem-group { margin-bottom: 16px; }
+  .sem-group-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin-bottom: 7px; padding: 4px 0; border-bottom: 1px solid rgba(201,168,76,0.25); }
+
+  .slot-card { border: 2px solid #dde3f0; border-radius: 9px; padding: 12px 13px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; position: relative; display: flex; align-items: center; gap: 12px; }
+  .slot-card:hover:not(.lleno) { border-color: var(--gold); background: #fffdf6; }
+  .slot-card.selected { border-color: var(--gold); background: #fffdf6; box-shadow: 0 2px 8px rgba(201,168,76,0.18); }
+  .slot-card.lleno { opacity: 0.55; cursor: not-allowed; background: #f5f5f5; }
+
+  .slot-check { width: 20px; height: 20px; min-width: 20px; border: 2px solid #c8d0e0; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: all 0.2s; }
+  .slot-card.selected .slot-check { background: var(--gold); border-color: var(--gold); color: white; }
+  .slot-card.lleno .slot-check { background: #eee; border-color: #ccc; }
+
+  .slot-info { flex: 1; }
+  .slot-name { font-weight: 600; font-size: 0.92rem; color: var(--navy); }
+  .slot-bar-row { display: flex; align-items: center; gap: 7px; margin-top: 5px; }
+  .slot-bar { flex: 1; height: 5px; background: #e5e9f0; border-radius: 10px; overflow: hidden; }
+  .slot-bar-fill { height: 100%; border-radius: 10px; transition: width 0.4s; }
+  .fill-ok { background: var(--green); }
+  .fill-warn { background: #e67e22; }
+  .fill-full { background: var(--red); }
+  .slot-lbl { font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+  .lbl-ok { color: var(--green); }
+  .lbl-warn { color: #e67e22; }
+  .lbl-full { color: var(--red); }
+
+  .submit-btn { width: 100%; padding: 14px; background: var(--navy); color: var(--white); border: none; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 0.97rem; font-weight: 600; letter-spacing: 0.4px; cursor: pointer; transition: background 0.2s; }
+  .submit-btn:hover:not(:disabled) { background: #243460; }
+  .submit-btn:disabled { background: #a0a8b8; cursor: not-allowed; }
+
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .alert { padding: 11px 14px; border-radius: 8px; margin-bottom: 13px; font-size: 0.87rem; font-weight: 600; }
+  .alert-error { background: #fdecea; color: var(--red); border: 1px solid #f5c6c2; }
+  .alert-success { background: #e8f5ee; color: var(--green); border: 1px solid #b7dfc8; }
+  .alert-info { background: #eef2ff; color: var(--navy); border: 1px solid #c5d0f0; }
+
+  .success-card { text-align: center; }
+  .success-icon { font-size: 3rem; margin-bottom: 10px; }
+  .success-card h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 6px; }
+  .success-card > p { color: #667; font-size: 0.88rem; margin-bottom: 14px; }
+  .ticket { background: var(--cream); border: 2px dashed var(--gold); border-radius: 10px; padding: 14px; text-align: left; }
+  .ticket-item { display: flex; align-items: flex-start; gap: 9px; padding: 7px 0; border-bottom: 1px solid #e0d8c8; font-size: 0.86rem; }
+  .ticket-item:last-child { border-bottom: none; }
+  .ticket-dot { color: var(--gold); font-weight: 700; margin-top: 1px; }
+  .new-btn { width: 100%; padding: 13px; margin-top: 12px; background: var(--gold); color: var(--navy); border: none; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 0.93rem; font-weight: 700; cursor: pointer; }
+  .new-btn:hover { background: var(--gold-light); }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-bottom: 14px; }
+  .stat-box { background: var(--white); border-radius: 10px; padding: 13px 8px; text-align: center; box-shadow: var(--shadow); }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--navy); }
+  .stat-lbl { font-size: 0.68rem; color: #889; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+
+  .cupos-group { background: var(--white); border-radius: 10px; padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .cupos-group-title { font-size: 0.8rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(201,168,76,0.25); }
+  .cupo-row { margin-bottom: 10px; }
+  .cupo-row:last-child { margin-bottom: 0; }
+  .cupo-row-top { display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px; }
+  .cupo-row-name { font-weight: 600; }
+
+  .admin-login { text-align: center; }
+  .admin-login .icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .admin-login h2 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 14px; }
+  .admin-login input { width: 100%; padding: 10px 13px; border: 2px solid #dde3f0; border-radius: 8px; font-size: 0.93rem; margin-bottom: 11px; }
+  .admin-login input:focus { outline: none; border-color: var(--gold); }
+  .login-btn { width: 100%; padding: 12px; background: var(--navy); color: white; border: none; border-radius: 8px; font-size: 0.93rem; font-weight: 600; cursor: pointer; }
+
+  .seg-section { margin-bottom: 18px; }
+  .seg-header { background: var(--navy); color: white; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .seg-header-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; }
+  .seg-header-count { font-size: 0.78rem; color: var(--gold-light); }
+  .seg-speaker { margin-bottom: 8px; background: var(--white); border-radius: 8px; padding: 12px; box-shadow: var(--shadow); }
+  .seg-speaker-title { font-size: 0.8rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid rgba(201,168,76,0.2); display: flex; justify-content: space-between; }
+  .reg-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; }
+  .reg-item:last-child { border-bottom: none; }
+  .reg-name-text { font-weight: 600; color: var(--navy); }
+  .reg-date { font-size: 0.72rem; color: #aaa; }
+  .del-btn { padding: 3px 9px; background: none; border: 1px solid #f5c6c2; border-radius: 4px; color: var(--red); font-size: 0.72rem; cursor: pointer; white-space: nowrap; }
+  .del-btn:hover { background: #fdecea; }
+
+  .export-btn { width: 100%; padding: 12px; margin-bottom: 12px; background: var(--gold); color: var(--navy); border: none; border-radius: 9px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
+  .export-btn:hover { background: var(--gold-light); }
+  .refresh-btn { width: 100%; padding: 10px; margin-bottom: 12px; background: var(--white); border: 2px solid var(--gold); border-radius: 9px; color: var(--navy); font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+  .logout-btn { width: 100%; padding: 10px; margin-top: 10px; background: none; border: 2px solid #dde3f0; border-radius: 8px; color: #889; font-size: 0.84rem; cursor: pointer; }
+
+  .toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--navy); color: white; padding: 11px 22px; border-radius: 25px; font-size: 0.86rem; font-weight: 600; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(26,39,68,0.35); z-index: 100; align-items: center; justify-content: center; }
+  .loading-overlay.show { display: flex; }
+  .loading-box { background: white; border-radius: 12px; padding: 22px 30px; text-align: center; }
+  .loading-box .big-spin { display: block; width: 30px; height: 30px; border: 3px solid #dde3f0; border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
+  .loading-box p { font-size: 0.88rem; color: var(--navy); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Registro de Seminarios</h1>
+  <p>Selecciona los seminarios de tu preferencia</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('registro',this)">✍️ Registro</button>
+  <button class="tab-btn" onclick="showTab('cupos',this)">📊 Cupos</button>
+  <button class="tab-btn" onclick="showTab('admin',this)">🔒 Admin</button>
+</div>
+
+<!-- REGISTRO -->
+<div id="tab-registro" class="view active">
+  <div id="form-view">
+    <div class="card">
+      <h2>Datos personales</h2>
+      <div class="field">
+        <label>Nombre completo</label>
+        <input type="text" id="nombre" placeholder="Ej: Juan Pérez" autocomplete="off"/>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Elige tus seminarios</h2>
+      <p style="font-size:0.81rem;color:#889;margin-bottom:14px;">Máximo 40 personas por grupo. Puedes elegir más de uno.</p>
+      <div id="slots-list"><div class="alert alert-info"><span class="spinner" style="border-top-color:var(--navy);border-color:#c5d0f0;"></span> Cargando disponibilidad…</div></div>
+    </div>
+    <div id="form-alert"></div>
+    <button class="submit-btn" id="submit-btn" onclick="registrar()">Confirmar Registro</button>
+  </div>
+
+  <div id="success-view" style="display:none;">
+    <div class="card success-card">
+      <div class="success-icon">✅</div>
+      <h2>¡Registro exitoso!</h2>
+      <p id="success-name"></p>
+      <div class="ticket" id="success-ticket"></div>
+    </div>
+    <button class="new-btn" onclick="nuevoRegistro()">+ Registrar otra persona</button>
+  </div>
+</div>
+
+<!-- CUPOS -->
+<div id="tab-cupos" class="view">
+  <button class="refresh-btn" onclick="loadCupos(true)">↻ Actualizar disponibilidad</button>
+  <div id="cupos-content"><div class="alert alert-info"><span class="spinner" style="border-top-color:var(--navy);border-color:#c5d0f0;"></span> Cargando…</div></div>
+</div>
+
+<!-- ADMIN -->
+<div id="tab-admin" class="view">
+  <div id="admin-login-view">
+    <div class="card admin-login">
+      <div class="icon">🔒</div>
+      <h2>Acceso Administrativo</h2>
+      <input type="password" id="admin-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')adminLogin()"/>
+      <button class="login-btn" onclick="adminLogin()">Ingresar</button>
+      <div id="login-alert" style="margin-top:10px;"></div>
+    </div>
+  </div>
+  <div id="admin-panel" style="display:none;"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="loading-overlay" id="loading">
+  <div class="loading-box"><span class="big-spin"></span><p>Guardando registro…</p></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// ⚠️  CAMBIA ESTA URL después de desplegar el Apps Script
+// ════════════════════════════════════════════════════════
+const API = 'AQUI_LA_URL_DE_TU_APPS_SCRIPT';
+
+const SEMINARIOS = [
+  { id: 'S1', num: 'Seminario 1', hora: '9:30 a.m.' },
+  { id: 'S2', num: 'Seminario 2', hora: '4:05 p.m.' },
+  { id: 'S3', num: 'Seminario 3', hora: '9:00 a.m.' },
+  { id: 'S4', num: 'Seminario 4', hora: '11:25 a.m.' },
+];
+const SPEAKERS = ['Scott Mayer', 'Sebastien Braxton', 'Manuel Montero'];
+const CAPACIDAD = 40;
+
+function slotId(semId, sp) { return `${semId}_${sp.replace(/\s/g,'')}`; }
+
+const SLOT_META = {};
+SEMINARIOS.forEach(s => SPEAKERS.forEach(sp => {
+  SLOT_META[slotId(s.id, sp)] = { semNum: s.num, hora: s.hora, speaker: sp, semId: s.id };
+}));
+
+let cuposCache = null;
+let selectedSlots = [];
+let adminPass = '';
+
+async function api(params) {
+  const res = await fetch(`${API}?${new URLSearchParams(params)}`);
+  return res.json();
+}
+
+// ── CUPOS ────────────────────────────────────────────────
+async function loadCupos(force = false) {
+  if (!force && cuposCache) { renderCuposTab(cuposCache); return cuposCache; }
+  document.getElementById('cupos-content').innerHTML = '<div class="alert alert-info"><span class="spinner" style="border-top-color:var(--navy);border-color:#c5d0f0;"></span> Actualizando…</div>';
+  try {
+    const data = await api({ action: 'getCupos' });
+    if (data.ok) { cuposCache = data.cupos; renderCuposTab(data.cupos); return data.cupos; }
+  } catch(e) {}
+  document.getElementById('cupos-content').innerHTML = '<div class="alert alert-error">Error al cargar. Intenta de nuevo.</div>';
+  return cuposCache || {};
+}
+
+function renderCuposTab(cupos) {
+  let llenos = 0, totalIns = 0;
+  Object.values(cupos).forEach(v => { totalIns += (CAPACIDAD - v); if (v === 0) llenos++; });
+  let html = `<div class="stats-grid">
+    <div class="stat-box"><div class="stat-num">${llenos}</div><div class="stat-lbl">Llenos</div></div>
+    <div class="stat-box"><div class="stat-num">${SEMINARIOS.length * SPEAKERS.length - llenos}</div><div class="stat-lbl">Con cupos</div></div>
+    <div class="stat-box"><div class="stat-num">${totalIns}</div><div class="stat-lbl">Inscripciones</div></div>
+  </div>`;
+  SEMINARIOS.forEach(s => {
+    html += `<div class="cupos-group"><div class="cupos-group-title">${s.num} · ${s.hora}</div>`;
+    SPEAKERS.forEach(sp => {
+      const id = slotId(s.id, sp);
+      const libres = cupos[id] ?? CAPACIDAD;
+      const ocu = CAPACIDAD - libres;
+      const pct = Math.min(100, ocu / CAPACIDAD * 100);
+      const lleno = libres === 0, warn = libres <= 8 && !lleno;
+      html += `<div class="cupo-row">
+        <div class="cupo-row-top"><span class="cupo-row-name">${sp}</span>
+          <span class="slot-lbl ${lleno?'lbl-full':warn?'lbl-warn':'lbl-ok'}">${lleno?'🔴 Lleno':`${libres} disponibles`}</span></div>
+        <div class="slot-bar"><div class="slot-bar-fill ${lleno?'fill-full':warn?'fill-warn':'fill-ok'}" style="width:${pct}%"></div></div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('cupos-content').innerHTML = html;
+}
+
+// ── SLOTS DE REGISTRO ────────────────────────────────────
+async function renderSlots() {
+  const cupos = await loadCupos();
+  let html = '';
+  SEMINARIOS.forEach(s => {
+    html += `<div class="sem-group"><div class="sem-group-title">${s.num} · ${s.hora}</div>`;
+    SPEAKERS.forEach(sp => {
+      const id = slotId(s.id, sp);
+      const libres = cupos[id] ?? CAPACIDAD;
+      const ocu = CAPACIDAD - libres;
+      const lleno = libres === 0, warn = libres <= 8 && !lleno;
+      const sel = selectedSlots.includes(id);
+      const pct = Math.min(100, ocu / CAPACIDAD * 100);
+      html += `<div class="slot-card ${sel?'selected':''} ${lleno?'lleno':''}" onclick="toggleSlot('${id}',${lleno})">
+        <div class="slot-check">${sel?'✓':lleno?'✕':''}</div>
+        <div class="slot-info">
+          <div class="slot-name">${sp}</div>
+          <div class="slot-bar-row">
+            <div class="slot-bar"><div class="slot-bar-fill ${lleno?'fill-full':warn?'fill-warn':'fill-ok'}" style="width:${pct}%"></div></div>
+            <span class="slot-lbl ${lleno?'lbl-full':warn?'lbl-warn':'lbl-ok'}">${lleno?'Lleno':`${libres} libres`}</span>
+          </div>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('slots-list').innerHTML = html;
+}
+
+function toggleSlot(id, lleno) {
+  if (lleno) { showToast('Este grupo ya no tiene cupos'); return; }
+  const i = selectedSlots.indexOf(id);
+  i === -1 ? selectedSlots.push(id) : selectedSlots.splice(i, 1);
+  renderSlots();
+}
+
+// ── REGISTRAR ────────────────────────────────────────────
+async function registrar() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const alertEl = document.getElementById('form-alert');
+  alertEl.innerHTML = '';
+  if (!nombre) { alertEl.innerHTML = '<div class="alert alert-error">Por favor ingresa tu nombre.</div>'; return; }
+  if (!selectedSlots.length) { alertEl.innerHTML = '<div class="alert alert-error">Selecciona al menos un seminario.</div>'; return; }
+
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('submit-btn').disabled = true;
+  try {
+    const data = await api({ action: 'register', nombre, slots: JSON.stringify(selectedSlots) });
+    document.getElementById('loading').classList.remove('show');
+    if (data.ok) {
+      cuposCache = null;
+      mostrarExito(nombre);
+    } else {
+      alertEl.innerHTML = `<div class="alert alert-error">${data.error}</div>`;
+      document.getElementById('submit-btn').disabled = false;
+      if ((data.error || '').includes('lleno')) { cuposCache = null; renderSlots(); }
+    }
+  } catch(e) {
+    document.getElementById('loading').classList.remove('show');
+    alertEl.innerHTML = '<div class="alert alert-error">Error de conexión. Intenta de nuevo.</div>';
+    document.getElementById('submit-btn').disabled = false;
+  }
+}
+
+function mostrarExito(nombre) {
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('success-view').style.display = 'block';
+  document.getElementById('success-name').textContent = `¡Listo, ${nombre}!`;
+  document.getElementById('success-ticket').innerHTML = selectedSlots.map(id => {
+    const m = SLOT_META[id];
+    return m ? `<div class="ticket-item"><span class="ticket-dot">◆</span>
+      <div><strong>${m.semNum}</strong> · ${m.hora}<br><span style="color:#667">${m.speaker}</span></div></div>` : '';
+  }).join('');
+}
+
+function nuevoRegistro() {
+  selectedSlots = [];
+  document.getElementById('nombre').value = '';
+  document.getElementById('form-alert').innerHTML = '';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('form-view').style.display = 'block';
+  document.getElementById('success-view').style.display = 'none';
+  renderSlots();
+}
+
+// ── ADMIN ────────────────────────────────────────────────
+async function adminLogin() {
+  const pass = document.getElementById('admin-pass').value;
+  document.getElementById('login-alert').innerHTML = '<div class="alert alert-info"><span class="spinner" style="border-top-color:var(--navy);border-color:#c5d0f0;"></span> Verificando…</div>';
+  try {
+    const data = await api({ action: 'getList', pass });
+    if (data.ok) {
+      adminPass = pass;
+      document.getElementById('admin-login-view').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      renderAdmin(data.registros);
+    } else {
+      document.getElementById('login-alert').innerHTML = `<div class="alert alert-error">${data.error}</div>`;
+    }
+  } catch(e) {
+    document.getElementById('login-alert').innerHTML = '<div class="alert alert-error">Error de conexión.</div>';
+  }
+}
+
+function renderAdmin(registros) {
+  // Segmentar por seminario > orador
+  const seg = {};
+  SEMINARIOS.forEach(s => { seg[s.id] = { meta: s, speakers: {} }; SPEAKERS.forEach(sp => seg[s.id].speakers[sp] = []); });
+  registros.forEach(r => r.slots.forEach(id => { const m = SLOT_META[id]; if (m) seg[m.semId].speakers[m.speaker].push(r); }));
+
+  let html = `<button class="export-btn" onclick="exportCSV()">⬇ Descargar lista completa (CSV)</button>`;
+
+  SEMINARIOS.forEach(s => {
+    let total = SPEAKERS.reduce((a, sp) => a + seg[s.id].speakers[sp].length, 0);
+    html += `<div class="seg-section">
+      <div class="seg-header"><span class="seg-header-title">${s.num} · ${s.hora}</span><span class="seg-header-count">${total} inscritos</span></div>`;
+    SPEAKERS.forEach(sp => {
+      const lista = seg[s.id].speakers[sp];
+      html += `<div class="seg-speaker">
+        <div class="seg-speaker-title"><span>${sp}</span><span style="font-weight:400;color:#889;">${lista.length}/${CAPACIDAD}</span></div>`;
+      if (!lista.length) {
+        html += '<p style="color:#bbb;font-size:0.82rem;">Sin inscritos aún.</p>';
+      } else {
+        lista.forEach((r, i) => {
+          html += `<div class="reg-item">
+            <div><span class="reg-name-text">${i+1}. ${r.nombre}</span><div class="reg-date">${r.fecha}</div></div>
+            <button class="del-btn" onclick="eliminarAdmin(${r.id})">✕ Eliminar</button>
+          </div>`;
+        });
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+
+  html += `<button class="logout-btn" onclick="adminLogout()">Cerrar sesión</button>`;
+  document.getElementById('admin-panel').innerHTML = html;
+}
+
+async function eliminarAdmin(id) {
+  if (!confirm('¿Eliminar este registro?')) return;
+  try {
+    const data = await api({ action: 'delete', pass: adminPass, id });
+    if (data.ok) {
+      showToast('Registro eliminado'); cuposCache = null;
+      const list = await api({ action: 'getList', pass: adminPass });
+      if (list.ok) renderAdmin(list.registros);
+    } else showToast('Error: ' + data.error);
+  } catch(e) { showToast('Error de conexión'); }
+}
+
+function adminLogout() {
+  adminPass = '';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-login-view').style.display = 'block';
+  document.getElementById('admin-pass').value = '';
+  document.getElementById('login-alert').innerHTML = '';
+}
+
+async function exportCSV() {
+  const data = await api({ action: 'getList', pass: adminPass });
+  if (!data.ok) { showToast('Error al obtener datos'); return; }
+  let csv = 'Seminario,Hora,Orador,#,Nombre,Fecha Registro\n';
+  SEMINARIOS.forEach(s => SPEAKERS.forEach(sp => {
+    const id = slotId(s.id, sp);
+    data.registros.filter(r => r.slots.includes(id)).forEach((r, i) => {
+      csv += `"${s.num}","${s.hora}","${sp}","${i+1}","${r.nombre}","${r.fecha}"\n`;
+    });
+  }));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'}));
+  a.download = 'inscritos_seminarios.csv';
+  a.click();
+  showToast('Descargando CSV…');
+}
+
+// ── TABS ─────────────────────────────────────────────────
+function showTab(tab, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  btn.classList.add('active');
+  if (tab === 'cupos') loadCupos(true);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+renderSlots();
+</script>
+</body>
+</html>
