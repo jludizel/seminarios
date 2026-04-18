@@ -20,189 +20,80 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
   html { font-size: 16px; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); min-height: 100vh; color: var(--navy); -webkit-font-smoothing: antialiased; }
 
-  body {
-    font-family: 'Source Sans 3', sans-serif;
-    background: var(--cream);
-    min-height: 100vh;
-    color: var(--navy);
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ── HEADER ── */
-  header {
-    background: var(--navy);
-    color: var(--white);
-    padding: 28px 20px 22px;
-    text-align: center;
-    border-bottom: 4px solid var(--gold);
-  }
-  header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.5rem, 5vw, 2rem);
-    line-height: 1.2;
-    margin-bottom: 6px;
-  }
+  /* HEADER */
+  header { background: var(--navy); color: var(--white); padding: 28px 20px 22px; text-align: center; border-bottom: 4px solid var(--gold); }
+  header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2rem); line-height: 1.2; margin-bottom: 6px; }
   header p { font-size: 0.88rem; color: var(--gold-light); font-weight: 300; }
 
-  /* ── TABS ── */
-  .tabs {
-    display: flex;
-    background: var(--navy);
-    border-bottom: 3px solid var(--gold);
-    position: sticky; top: 0; z-index: 50;
-  }
-  .tab-btn {
-    flex: 1; padding: 14px 6px;
-    background: none; border: none;
-    color: #8899bb;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.82rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.5px;
-    cursor: pointer; transition: all 0.2s;
-    border-bottom: 3px solid transparent; margin-bottom: -3px;
-  }
+  /* TABS */
+  .tabs { display: flex; background: var(--navy); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 50; }
+  .tab-btn { flex: 1; padding: 14px 6px; background: none; border: none; color: #8899bb; font-family: 'Source Sans 3', sans-serif; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
   .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(201,168,76,0.08); }
 
-  /* ── VIEWS ── */
+  /* VIEWS */
   .view { display: none; padding: 16px; max-width: 600px; margin: 0 auto; }
   .view.active { display: block; }
 
-  /* ── CARD ── */
-  .card {
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: var(--shadow);
+  /* CARD */
+  .card { background: var(--white); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 14px; }
+  .card h2 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--navy); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); }
+
+  /* CAMPOS */
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--navy); margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .field input { width: 100%; padding: 13px 15px; border: 2px solid #dde3f0; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: max(1rem, 16px); color: var(--navy); transition: border-color 0.2s; }
+  .field input:focus { outline: none; border-color: var(--gold); }
+  .field input.error { border-color: var(--red); }
+
+  /* DÍA BANNER */
+  .day-banner {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--navy); color: var(--white);
+    border-radius: 12px; padding: 14px 18px;
     margin-bottom: 14px;
   }
-  .card h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    color: var(--navy);
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--gold);
-  }
+  .day-banner-icon { font-size: 1.6rem; }
+  .day-banner-text h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; line-height: 1.2; }
+  .day-banner-text p  { font-size: 0.8rem; color: var(--gold-light); margin-top: 2px; }
 
-  /* ── CAMPO NOMBRE ── */
-  .field { margin-bottom: 4px; }
-  .field label {
-    display: block; font-size: 0.8rem; font-weight: 700;
-    color: var(--navy); margin-bottom: 7px;
-    text-transform: uppercase; letter-spacing: 0.5px;
+  /* BLOQUE BLOQUEADO */
+  .day-locked {
+    background: #f0f2f8; border: 2px dashed #c8d0e0;
+    border-radius: 12px; padding: 20px; text-align: center;
+    margin-bottom: 14px;
   }
-  .field input {
-    width: 100%; padding: 13px 15px;
-    border: 2px solid #dde3f0; border-radius: 10px;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 1rem; color: var(--navy);
-    transition: border-color 0.2s;
-    /* evita zoom en iOS */
-    font-size: max(1rem, 16px);
-  }
-  .field input:focus { outline: none; border-color: var(--gold); }
+  .day-locked-icon { font-size: 2rem; margin-bottom: 8px; }
+  .day-locked h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: #667; margin-bottom: 4px; }
+  .day-locked p { font-size: 0.83rem; color: #99a; }
 
-  /* ── BLOQUE DE SEMINARIO ── */
-  .sem-group { margin-bottom: 20px; }
+  /* SEMINARIO GROUP */
+  .sem-group { margin-bottom: 18px; }
+  .sem-group-header { background: var(--navy); border-radius: 10px 10px 0 0; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .sem-group-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--white); line-height: 1.2; }
+  .sem-group-hora  { font-size: 1rem; font-weight: 700; color: var(--gold); white-space: nowrap; }
+  .sem-group-body  { border: 2px solid #dde3f0; border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; }
 
-  .sem-group-header {
-    background: var(--navy);
-    border-radius: 10px 10px 0 0;
-    padding: 14px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-  }
-  .sem-group-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.2;
-  }
-  .sem-group-hora {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--gold);
-    white-space: nowrap;
-    letter-spacing: 0.3px;
-  }
-
-  .sem-group-body {
-    border: 2px solid #dde3f0;
-    border-top: none;
-    border-radius: 0 0 10px 10px;
-    overflow: hidden;
-  }
-
-  /* Aviso "ya elegiste uno" */
-  .sem-notice {
-    display: none;
-    padding: 9px 14px;
-    background: #fff8e6;
-    border-bottom: 1px solid #f0d98a;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #8a6000;
-    align-items: center;
-    gap: 6px;
-  }
+  .sem-notice { display: none; padding: 10px 14px; background: #fff8e6; border-bottom: 1px solid #f0d98a; font-size: 0.83rem; font-weight: 600; color: #8a6000; align-items: center; gap: 6px; }
   .sem-notice.show { display: flex; }
 
-  /* ── RADIO CARD ── */
-  .slot-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    cursor: pointer;
-    transition: background 0.15s;
-    border-bottom: 1px solid #eef0f6;
-    background: var(--white);
-    /* área táctil generosa */
-    min-height: 64px;
-  }
+  /* RADIO CARD */
+  .slot-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; cursor: pointer; transition: background 0.15s; border-bottom: 1px solid #eef0f6; background: var(--white); min-height: 64px; }
   .slot-card:last-child { border-bottom: none; }
   .slot-card:active:not(.lleno) { background: #fffbf0; }
   .slot-card.selected { background: #fffbf0; }
   .slot-card.lleno { opacity: 0.5; cursor: not-allowed; background: #f9f9f9; }
 
-  /* Radio visual */
-  .slot-radio {
-    width: 22px; height: 22px; min-width: 22px;
-    border: 2.5px solid #c8d0e0;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-    position: relative;
-  }
-  .slot-card.selected .slot-radio {
-    border-color: var(--gold);
-    background: var(--gold);
-  }
-  .slot-card.selected .slot-radio::after {
-    content: '';
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: white;
-  }
+  .slot-radio { width: 22px; height: 22px; min-width: 22px; border: 2.5px solid #c8d0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .slot-card.selected .slot-radio { border-color: var(--gold); background: var(--gold); }
+  .slot-card.selected .slot-radio::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: white; }
   .slot-card.lleno .slot-radio { border-color: #ccc; background: #eee; }
 
-  /* Info del slot */
   .slot-info { flex: 1; min-width: 0; }
-  .slot-name {
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--navy);
-    margin-bottom: 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .slot-name { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 5px; }
   .slot-bar-row { display: flex; align-items: center; gap: 8px; }
   .slot-bar { flex: 1; height: 6px; background: #e5e9f0; border-radius: 10px; overflow: hidden; }
   .slot-bar-fill { height: 100%; border-radius: 10px; transition: width 0.4s; }
@@ -213,51 +104,25 @@
   .lbl-ok   { color: var(--green); }
   .lbl-warn { color: #e67e22; }
   .lbl-full { color: var(--red); }
+  .sem-hint { font-size: 0.78rem; color: #99a; margin-top: 6px; padding: 0 4px; font-style: italic; }
 
-  /* Instrucción debajo del bloque */
-  .sem-hint {
-    font-size: 0.78rem;
-    color: #99a;
-    margin-top: 6px;
-    padding: 0 4px;
-    font-style: italic;
-  }
-
-  /* ── BOTÓN REGISTRAR ── */
-  .submit-btn {
-    width: 100%; padding: 16px;
-    background: var(--navy); color: var(--white);
-    border: none; border-radius: 12px;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 1.05rem; font-weight: 700; letter-spacing: 0.3px;
-    cursor: pointer; transition: background 0.2s;
-    margin-top: 4px;
-  }
+  /* BOTONES */
+  .submit-btn { width: 100%; padding: 16px; background: var(--navy); color: var(--white); border: none; border-radius: 12px; font-family: 'Source Sans 3', sans-serif; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 4px; }
   .submit-btn:hover:not(:disabled) { background: #243460; }
   .submit-btn:disabled { background: #a0a8b8; cursor: not-allowed; }
 
-  /* ── SPINNER ── */
-  .spinner {
-    display: inline-block; width: 17px; height: 17px;
-    border: 2.5px solid rgba(255,255,255,0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle; margin-right: 7px;
-  }
-  .spinner-dark {
-    border-color: rgba(26,39,68,0.2);
-    border-top-color: var(--navy);
-  }
+  /* SPINNER */
+  .spinner { display: inline-block; width: 17px; height: 17px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 7px; }
+  .spinner-dark { border-color: rgba(26,39,68,0.15); border-top-color: var(--navy); }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── ALERTS ── */
-  .alert { padding: 12px 15px; border-radius: 9px; margin-bottom: 13px; font-size: 0.9rem; font-weight: 600; }
+  /* ALERTS */
+  .alert { padding: 12px 15px; border-radius: 9px; margin-bottom: 13px; font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
   .alert-error   { background: #fdecea; color: var(--red);   border: 1px solid #f5c6c2; }
   .alert-success { background: #e8f5ee; color: var(--green); border: 1px solid #b7dfc8; }
   .alert-info    { background: #eef2ff; color: var(--navy);  border: 1px solid #c5d0f0; }
 
-  /* ── ÉXITO ── */
+  /* ÉXITO */
   .success-card { text-align: center; }
   .success-icon { font-size: 3.2rem; margin-bottom: 10px; }
   .success-card h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 6px; }
@@ -265,82 +130,100 @@
   .ticket { background: var(--cream); border: 2px dashed var(--gold); border-radius: 12px; padding: 16px; text-align: left; }
   .ticket-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid #e0d8c8; font-size: 0.9rem; }
   .ticket-item:last-child { border-bottom: none; }
-  .ticket-dot { color: var(--gold); font-weight: 700; margin-top: 1px; font-size: 1rem; }
+  .ticket-dot  { color: var(--gold); font-weight: 700; font-size: 1rem; margin-top: 1px; }
   .ticket-sem  { font-weight: 700; font-size: 1rem; color: var(--navy); }
   .ticket-hora { font-size: 0.83rem; color: var(--gold); font-weight: 600; }
   .ticket-sp   { font-size: 0.85rem; color: #667; margin-top: 2px; }
-  .new-btn {
-    width: 100%; padding: 15px; margin-top: 14px;
-    background: var(--gold); color: var(--navy);
-    border: none; border-radius: 12px;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 1rem; font-weight: 700; cursor: pointer;
-  }
+  .new-btn { width: 100%; padding: 15px; margin-top: 14px; background: var(--gold); color: var(--navy); border: none; border-radius: 12px; font-family: 'Source Sans 3', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; }
   .new-btn:hover { background: var(--gold-light); }
 
-  /* ── CUPOS ── */
+  /* CUPOS */
   .stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
   .stat-box { background: var(--white); border-radius: 12px; padding: 14px 8px; text-align: center; box-shadow: var(--shadow); }
   .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--navy); }
   .stat-lbl { font-size: 0.7rem; color: #889; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 3px; }
-
-  .cupos-group { background: var(--white); border-radius: 12px; margin-bottom: 12px; box-shadow: var(--shadow); overflow: hidden; }
+  .cupos-day { margin-bottom: 18px; }
+  .cupos-day-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--navy); padding: 10px 0 8px; margin-bottom: 10px; border-bottom: 2px solid var(--gold); }
+  .cupos-group { background: var(--white); border-radius: 12px; margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
   .cupos-group-header { background: var(--navy); padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; }
-  .cupos-group-title  { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--white); }
+  .cupos-group-title  { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--white); }
   .cupos-group-hora   { font-size: 0.9rem; font-weight: 700; color: var(--gold); }
   .cupos-body { padding: 12px 16px; }
   .cupo-row { margin-bottom: 12px; }
   .cupo-row:last-child { margin-bottom: 0; }
   .cupo-row-top { display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 5px; }
   .cupo-row-name { font-weight: 700; }
+  .refresh-btn { width: 100%; padding: 12px; margin-bottom: 14px; background: var(--white); border: 2px solid var(--gold); border-radius: 12px; color: var(--navy); font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
 
-  .refresh-btn {
-    width: 100%; padding: 12px; margin-bottom: 14px;
-    background: var(--white); border: 2px solid var(--gold);
-    border-radius: 12px; color: var(--navy);
-    font-family: 'Source Sans 3', sans-serif;
-    font-weight: 700; font-size: 0.9rem; cursor: pointer;
-  }
-
-  /* ── ADMIN ── */
+  /* ADMIN */
   .admin-login { text-align: center; }
   .admin-login .icon { font-size: 2.8rem; margin-bottom: 10px; }
   .admin-login h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 16px; }
-  .admin-login input { width: 100%; padding: 13px 15px; border: 2px solid #dde3f0; border-radius: 10px; font-size: max(1rem, 16px); margin-bottom: 12px; }
+  .admin-login input { width: 100%; padding: 13px 15px; border: 2px solid #dde3f0; border-radius: 10px; font-size: max(1rem,16px); margin-bottom: 12px; }
   .admin-login input:focus { outline: none; border-color: var(--gold); }
   .login-btn { width: 100%; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+
+  /* Toggle domingo */
+  .domingo-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--white); border-radius: 12px; padding: 16px 18px;
+    box-shadow: var(--shadow); margin-bottom: 16px; gap: 16px;
+  }
+  .domingo-toggle-text h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--navy); margin-bottom: 3px; }
+  .domingo-toggle-text p  { font-size: 0.8rem; color: #889; }
+  .toggle-switch { position: relative; width: 56px; min-width: 56px; height: 30px; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: #c8d0e0; border-radius: 30px; cursor: pointer; transition: background 0.3s; }
+  .toggle-slider:before { content: ''; position: absolute; width: 22px; height: 22px; left: 4px; top: 4px; background: white; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+  .toggle-switch input:checked + .toggle-slider { background: var(--green); }
+  .toggle-switch input:checked + .toggle-slider:before { transform: translateX(26px); }
+  .toggle-status { font-size: 0.8rem; font-weight: 700; margin-top: 4px; }
+  .toggle-on  { color: var(--green); }
+  .toggle-off { color: #aaa; }
 
   .export-btn { width: 100%; padding: 14px; margin-bottom: 14px; background: var(--gold); color: var(--navy); border: none; border-radius: 12px; font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
   .export-btn:hover { background: var(--gold-light); }
 
   .seg-section { margin-bottom: 20px; }
-  .seg-header { background: var(--navy); color: white; padding: 12px 16px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .seg-day-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--navy); padding: 8px 0 6px; margin-bottom: 10px; border-bottom: 2px solid var(--gold); }
+  .seg-header { background: var(--navy); color: white; padding: 12px 16px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
   .seg-header-title { font-family: 'Playfair Display', serif; font-size: 1rem; }
   .seg-header-hora  { font-size: 0.85rem; color: var(--gold); font-weight: 700; }
   .seg-header-count { font-size: 0.8rem; color: var(--gold-light); }
   .seg-speaker { margin-bottom: 8px; background: var(--white); border-radius: 10px; padding: 13px; box-shadow: var(--shadow); }
   .seg-speaker-title { font-size: 0.82rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 9px; padding-bottom: 6px; border-bottom: 1px solid rgba(201,168,76,0.2); display: flex; justify-content: space-between; }
-  .reg-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.88rem; gap: 8px; }
+  .reg-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.88rem; gap: 8px; }
   .reg-item:last-child { border-bottom: none; }
   .reg-name-text { font-weight: 700; color: var(--navy); }
-  .reg-date { font-size: 0.74rem; color: #aaa; margin-top: 1px; }
-  .del-btn { padding: 5px 10px; background: none; border: 1px solid #f5c6c2; border-radius: 6px; color: var(--red); font-size: 0.75rem; cursor: pointer; white-space: nowrap; min-height: 34px; }
+  .reg-email { font-size: 0.75rem; color: #889; margin-top: 1px; }
+  .reg-date  { font-size: 0.74rem; color: #aaa; margin-top: 1px; }
+  .del-btn { padding: 5px 10px; background: none; border: 1px solid #f5c6c2; border-radius: 6px; color: var(--red); font-size: 0.75rem; cursor: pointer; white-space: nowrap; min-height: 34px; min-width: 72px; }
   .del-btn:hover { background: #fdecea; }
-
   .logout-btn { width: 100%; padding: 12px; margin-top: 12px; background: none; border: 2px solid #dde3f0; border-radius: 10px; color: #889; font-size: 0.88rem; cursor: pointer; }
 
-  /* ── TOAST ── */
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy); color: white; padding: 12px 24px; border-radius: 30px; font-size: 0.88rem; font-weight: 700; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; max-width: 90vw; text-align: center; }
+  /* MODAL CONFIRMACIÓN */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,39,68,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.show { display: flex; }
+  .modal { background: white; border-radius: 16px; padding: 28px 24px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 8px 40px rgba(26,39,68,0.25); }
+  .modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 10px; }
+  .modal p  { font-size: 0.9rem; color: #667; line-height: 1.5; margin-bottom: 22px; }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-cancel { flex: 1; padding: 13px; background: none; border: 2px solid #dde3f0; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 0.95rem; font-weight: 700; color: #889; cursor: pointer; }
+  .modal-confirm { flex: 1; padding: 13px; background: var(--navy); border: none; border-radius: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 0.95rem; font-weight: 700; color: white; cursor: pointer; }
+  .modal-confirm:hover { background: #243460; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy); color: white; padding: 12px 20px; border-radius: 16px; font-size: 0.88rem; font-weight: 700; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: normal; max-width: 88vw; width: max-content; text-align: center; line-height: 1.4; }
   .toast.show { opacity: 1; }
 
-  /* ── LOADING ── */
+  /* LOADING */
   .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(26,39,68,0.4); z-index: 100; align-items: center; justify-content: center; }
   .loading-overlay.show { display: flex; }
   .loading-box { background: white; border-radius: 14px; padding: 26px 36px; text-align: center; }
   .big-spin { display: block; width: 32px; height: 32px; border: 3px solid #dde3f0; border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
   .loading-box p { font-size: 0.9rem; color: var(--navy); font-weight: 700; }
 
-  /* ── RESPONSIVE desktop ── */
   @media (min-width: 480px) {
     .view { padding: 20px; }
     .slot-name { font-size: 1.05rem; }
@@ -353,7 +236,8 @@
 
 <header>
   <h1>Registro de Seminarios</h1>
-  <p>Elige un orador por cada bloque</p>
+  <p>GYC Costa Rica — EN ESTO PENSAD 💡</p>
+  <p style="margin-top:4px;">Elige un orador por bloque</p>
 </header>
 
 <div class="tabs">
@@ -362,32 +246,43 @@
   <button class="tab-btn" onclick="showTab('admin',this)">🔒 Admin</button>
 </div>
 
-<!-- ══ REGISTRO ══════════════════════════════════════════ -->
+<!-- ══ REGISTRO ══════════════════════════════════════ -->
 <div id="tab-registro" class="view active">
-
   <div id="form-view">
+
+    <!-- Selector de día -->
+    <div class="card">
+      <h2>¿Qué día vas a registrar?</h2>
+      <div style="display:flex;gap:10px;">
+        <button class="day-select-btn active" id="btn-sabado" onclick="selectDay('sabado')">☀️ Sábado</button>
+        <button class="day-select-btn" id="btn-domingo" onclick="selectDay('domingo')">🌅 Domingo</button>
+      </div>
+      <style>
+        .day-select-btn { flex:1; padding:13px 8px; border-radius:10px; border:2px solid #dde3f0; background:white; font-family:'Source Sans 3',sans-serif; font-size:0.95rem; font-weight:700; color:#889; cursor:pointer; transition:all 0.2s; }
+        .day-select-btn.active { border-color:var(--gold); background:#fffbf0; color:var(--navy); }
+        #btn-domingo.locked { opacity:0.45; cursor:not-allowed; }
+      </style>
+    </div>
+
     <div class="card">
       <h2>Tus datos</h2>
       <div class="field">
         <label>Nombre completo</label>
-        <input type="text" id="nombre" placeholder="Ej: Juan Pérez" autocomplete="off" autocorrect="off"/>
+        <input type="text" id="nombre" placeholder="Ej: Juan Pérez" autocomplete="name" autocorrect="off"/>
+      </div>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" id="correo" placeholder="Ej: juan@correo.com" autocomplete="email" autocapitalize="none"/>
+        <p style="font-size:0.76rem;color:#99a;margin-top:5px;">Tu correo valida que no te inscribas dos veces en el mismo día.</p>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Elige tu seminario</h2>
-      <p style="font-size:0.85rem;color:#889;margin-bottom:18px;line-height:1.5;">
-        Por cada bloque, selecciona <strong>un orador</strong>. Máximo 40 personas por grupo.
-      </p>
-      <div id="slots-list">
-        <div class="alert alert-info">
-          <span class="spinner spinner-dark"></span> Cargando disponibilidad…
-        </div>
-      </div>
+    <div id="seminarios-container">
+      <div class="alert alert-info"><span class="spinner spinner-dark"></span> Cargando disponibilidad…</div>
     </div>
 
     <div id="form-alert"></div>
-    <button class="submit-btn" id="submit-btn" onclick="registrar()">Confirmar Registro</button>
+    <button class="submit-btn" id="submit-btn" onclick="pedirConfirmacion()">Confirmar Registro</button>
   </div>
 
   <div id="success-view" style="display:none;">
@@ -399,10 +294,9 @@
     </div>
     <button class="new-btn" onclick="nuevoRegistro()">+ Registrar otra persona</button>
   </div>
-
 </div>
 
-<!-- ══ CUPOS ═════════════════════════════════════════════ -->
+<!-- ══ CUPOS ════════════════════════════════════════ -->
 <div id="tab-cupos" class="view">
   <button class="refresh-btn" onclick="loadCupos(true)">↻ Actualizar disponibilidad</button>
   <div id="cupos-content">
@@ -410,7 +304,7 @@
   </div>
 </div>
 
-<!-- ══ ADMIN ══════════════════════════════════════════════ -->
+<!-- ══ ADMIN ════════════════════════════════════════ -->
 <div id="tab-admin" class="view">
   <div id="admin-login-view">
     <div class="card admin-login">
@@ -425,6 +319,19 @@
   <div id="admin-panel" style="display:none;"></div>
 </div>
 
+<!-- Modal confirmación -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <h3>¿Confirmar registro?</h3>
+    <p>Una vez confirmado, <strong>no podrás cambiar</strong> el seminario al que te inscribiste.<br>¿Estás seguro?</p>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="cerrarModal()">Cancelar</button>
+      <button class="modal-confirm" onclick="confirmarRegistro()">Sí, confirmar</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <div class="loading-overlay" id="loading">
   <div class="loading-box"><span class="big-spin"></span><p>Guardando registro…</p></div>
@@ -432,16 +339,22 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// ════════════════════════════════════════════════════════
-// ⚠️  CAMBIA ESTA URL después de desplegar el Apps Script
-// ════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════
+// ⚠️  CAMBIA ESTA URL tras desplegar el Apps Script
+// ════════════════════════════════════════════════════
 const API = 'https://script.google.com/macros/s/AKfycbz-nf5cewpAwoQBXwWpXU8VT08l2J-m-MlE6sCSItVQ-70u70xpjMaTb4j3WIlK41at/exec';
 
-const SEMINARIOS = [
-  { id: 'S1', num: 'Seminario 1', hora: '9:30 a.m.' },
-  { id: 'S2', num: 'Seminario 2', hora: '4:05 p.m.' },
-  { id: 'S3', num: 'Seminario 3', hora: '9:00 a.m.' },
-  { id: 'S4', num: 'Seminario 4', hora: '11:25 a.m.' },
+// ── DATOS ────────────────────────────────────────────
+const DIAS = {
+  sabado:  { label: 'Sábado',  icon: '☀️' },
+  domingo: { label: 'Domingo', icon: '🌅' }
+};
+
+const BLOQUES = [
+  { id: 'S1', num: 'Seminario 1', hora: '9:30 a.m.',  dia: 'sabado'  },
+  { id: 'S2', num: 'Seminario 2', hora: '4:05 p.m.',  dia: 'sabado'  },
+  { id: 'S3', num: 'Seminario 3', hora: '9:00 a.m.',  dia: 'domingo' },
+  { id: 'S4', num: 'Seminario 4', hora: '11:25 a.m.', dia: 'domingo' },
 ];
 const SPEAKERS = ['Scott Mayer', 'Sebastien Braxton', 'Manuel Montero'];
 const CAPACIDAD = 40;
@@ -449,87 +362,123 @@ const CAPACIDAD = 40;
 function slotId(semId, sp) { return `${semId}_${sp.replace(/\s/g,'')}`; }
 
 const SLOT_META = {};
-SEMINARIOS.forEach(s => SPEAKERS.forEach(sp => {
-  SLOT_META[slotId(s.id, sp)] = { semNum: s.num, hora: s.hora, speaker: sp, semId: s.id };
+BLOQUES.forEach(s => SPEAKERS.forEach(sp => {
+  SLOT_META[slotId(s.id, sp)] = { semNum: s.num, hora: s.hora, speaker: sp, semId: s.id, dia: s.dia };
 }));
 
-// selectedSlots ahora es un map: semId → slotId (radio: 1 por bloque)
-let selectedSlots = {};   // { S1: 'S1_ScottMayer', S2: null, ... }
-let cuposCache = null;
-let adminPass = '';
+// ── STATE ─────────────────────────────────────────────
+let cuposCache       = null;
+let domingoEnabled   = false;
+let selectedDay      = 'sabado';
+let selectedSlots    = {};   // semId → slotId
+let adminPass        = '';
 
+// ── API ───────────────────────────────────────────────
 async function api(params) {
   const res = await fetch(`${API}?${new URLSearchParams(params)}`);
   return res.json();
 }
 
-// ── CUPOS ─────────────────────────────────────────────────
+// ── CUPOS ─────────────────────────────────────────────
 async function loadCupos(force = false) {
-  if (!force && cuposCache) { renderCuposTab(cuposCache); return cuposCache; }
+  if (!force && cuposCache) { renderCuposTab(cuposCache, domingoEnabled); return cuposCache; }
   document.getElementById('cupos-content').innerHTML =
     '<div class="alert alert-info"><span class="spinner spinner-dark"></span> Actualizando…</div>';
   try {
     const data = await api({ action: 'getCupos' });
-    if (data.ok) { cuposCache = data.cupos; renderCuposTab(data.cupos); return data.cupos; }
+    if (data.ok) {
+      cuposCache = data.cupos;
+      domingoEnabled = data.domingo_habilitado;
+      updateDomingoUI();
+      renderCuposTab(data.cupos, domingoEnabled);
+      return data.cupos;
+    }
   } catch(e) {}
   document.getElementById('cupos-content').innerHTML =
     '<div class="alert alert-error">Error al cargar. Intenta de nuevo.</div>';
   return cuposCache || {};
 }
 
-function renderCuposTab(cupos) {
+function renderCuposTab(cupos, domingoOn) {
   let llenos = 0, totalIns = 0;
   Object.values(cupos).forEach(v => { totalIns += (CAPACIDAD - v); if (v === 0) llenos++; });
-  const totalSlots = SEMINARIOS.length * SPEAKERS.length;
 
   let html = `<div class="stats-grid">
     <div class="stat-box"><div class="stat-num">${llenos}</div><div class="stat-lbl">Llenos</div></div>
-    <div class="stat-box"><div class="stat-num">${totalSlots - llenos}</div><div class="stat-lbl">Con cupos</div></div>
+    <div class="stat-box"><div class="stat-num">${BLOQUES.length * SPEAKERS.length - llenos}</div><div class="stat-lbl">Con cupos</div></div>
     <div class="stat-box"><div class="stat-num">${totalIns}</div><div class="stat-lbl">Inscripciones</div></div>
   </div>`;
 
-  SEMINARIOS.forEach(s => {
-    html += `<div class="cupos-group">
-      <div class="cupos-group-header">
-        <span class="cupos-group-title">${s.num}</span>
-        <span class="cupos-group-hora">${s.hora}</span>
-      </div>
-      <div class="cupos-body">`;
-    SPEAKERS.forEach(sp => {
-      const id = slotId(s.id, sp);
-      const libres = cupos[id] ?? CAPACIDAD;
-      const ocu = CAPACIDAD - libres;
-      const pct = Math.min(100, ocu / CAPACIDAD * 100);
-      const lleno = libres === 0, warn = libres <= 8 && !lleno;
-      html += `<div class="cupo-row">
-        <div class="cupo-row-top">
-          <span class="cupo-row-name">${sp}</span>
-          <span class="slot-lbl ${lleno?'lbl-full':warn?'lbl-warn':'lbl-ok'}">${lleno?'🔴 Lleno':`${libres} disponibles`}</span>
+  ['sabado','domingo'].forEach(dia => {
+    const bloquesDia = BLOQUES.filter(b => b.dia === dia);
+    const locked = dia === 'domingo' && !domingoOn;
+    html += `<div class="cupos-day">
+      <div class="cupos-day-title">${dia === 'sabado' ? '☀️ Sábado' : '🌅 Domingo'}${locked ? ' <span style="font-size:0.8rem;color:#aaa;font-family:sans-serif;">(por habilitar)</span>' : ''}</div>`;
+    bloquesDia.forEach(s => {
+      html += `<div class="cupos-group">
+        <div class="cupos-group-header">
+          <span class="cupos-group-title">${s.num}</span>
+          <span class="cupos-group-hora">${s.hora}</span>
         </div>
-        <div class="slot-bar"><div class="slot-bar-fill ${lleno?'fill-full':warn?'fill-warn':'fill-ok'}" style="width:${pct}%"></div></div>
-      </div>`;
+        <div class="cupos-body">`;
+      SPEAKERS.forEach(sp => {
+        const id = slotId(s.id, sp);
+        const libres = cupos[id] ?? CAPACIDAD;
+        const ocu = CAPACIDAD - libres;
+        const pct = Math.min(100, ocu / CAPACIDAD * 100);
+        const lleno = libres === 0, warn = libres <= 8 && !lleno;
+        html += `<div class="cupo-row">
+          <div class="cupo-row-top">
+            <span class="cupo-row-name">${sp}</span>
+            <span class="slot-lbl ${lleno?'lbl-full':warn?'lbl-warn':'lbl-ok'}">${lleno?'🔴 Lleno':`${libres} disponibles`}</span>
+          </div>
+          <div class="slot-bar"><div class="slot-bar-fill ${lleno?'fill-full':warn?'fill-warn':'fill-ok'}" style="width:${pct}%"></div></div>
+        </div>`;
+      });
+      html += '</div></div>';
     });
-    html += '</div></div>';
+    html += '</div>';
   });
+
   document.getElementById('cupos-content').innerHTML = html;
 }
 
-// ── RENDER SLOTS (radio buttons) ──────────────────────────
-async function renderSlots() {
+// ── SELECCIÓN DE DÍA ──────────────────────────────────
+function selectDay(dia) {
+  if (dia === 'domingo' && !domingoEnabled) {
+    showToast('Los seminarios del domingo aún no están habilitados');
+    return;
+  }
+  selectedDay = dia;
+  selectedSlots = {};
+  document.getElementById('btn-sabado').classList.toggle('active', dia === 'sabado');
+  document.getElementById('btn-domingo').classList.toggle('active', dia === 'domingo');
+  renderSeminarios();
+}
+
+function updateDomingoUI() {
+  const btn = document.getElementById('btn-domingo');
+  if (!domingoEnabled) btn.classList.add('locked');
+  else btn.classList.remove('locked');
+}
+
+// ── RENDER SEMINARIOS ─────────────────────────────────
+async function renderSeminarios() {
+  const container = document.getElementById('seminarios-container');
   const cupos = await loadCupos();
+  const bloquesDia = BLOQUES.filter(b => b.dia === selectedDay);
   let html = '';
 
-  SEMINARIOS.forEach(s => {
+  bloquesDia.forEach(s => {
     const selId = selectedSlots[s.id] || null;
-
     html += `<div class="sem-group">
       <div class="sem-group-header">
         <span class="sem-group-title">${s.num}</span>
         <span class="sem-group-hora">${s.hora}</span>
       </div>
       <div class="sem-group-body">
-        <div class="sem-notice ${selId ? 'show' : ''}" id="notice_${s.id}">
-          ⚠️ Solo puedes elegir un orador por bloque. Deselecciona el actual para cambiar.
+        <div class="sem-notice ${selId?'show':''}" id="notice_${s.id}">
+          ⚠️ Solo puedes elegir un orador por bloque.
         </div>`;
 
     SPEAKERS.forEach(sp => {
@@ -539,7 +488,6 @@ async function renderSlots() {
       const lleno = libres === 0, warn = libres <= 8 && !lleno;
       const sel = selId === id;
       const pct = Math.min(100, ocu / CAPACIDAD * 100);
-
       html += `<div class="slot-card ${sel?'selected':''} ${lleno?'lleno':''}"
                     onclick="toggleRadio('${s.id}','${id}',${lleno})">
         <div class="slot-radio"></div>
@@ -554,69 +502,82 @@ async function renderSlots() {
         </div>
       </div>`;
     });
-
-    html += `</div>
-      <p class="sem-hint">Elige solo un orador para este bloque.</p>
-    </div>`;
+    html += `</div><p class="sem-hint">Elige solo un orador para este bloque.</p></div>`;
   });
 
-  document.getElementById('slots-list').innerHTML = html;
+  container.innerHTML = html;
 }
 
 function toggleRadio(semId, id, lleno) {
   if (lleno) { showToast('Este grupo ya no tiene cupos disponibles'); return; }
-
-  const yaElegido = selectedSlots[semId];
-
-  if (yaElegido === id) {
-    // Deseleccionar
+  // Si ya estaba seleccionado, deseleccionar; si no, seleccionar (reemplazando cualquier otro)
+  if (selectedSlots[semId] === id) {
     delete selectedSlots[semId];
-  } else if (yaElegido && yaElegido !== id) {
-    // Intentó elegir otro → mostrar aviso brevemente, no cambiar
-    const notice = document.getElementById(`notice_${semId}`);
-    if (notice) {
-      notice.classList.add('show');
-      // Vibración táctil (si soportada)
-      if (navigator.vibrate) navigator.vibrate(60);
-    }
-    return;
   } else {
     selectedSlots[semId] = id;
   }
-
-  renderSlots();
+  renderSeminarios();
 }
 
-// ── REGISTRAR ─────────────────────────────────────────────
-async function registrar() {
+// ── CONFIRMACIÓN ──────────────────────────────────────
+function pedirConfirmacion() {
   const nombre = document.getElementById('nombre').value.trim();
+  const correo = document.getElementById('correo').value.trim();
   const alertEl = document.getElementById('form-alert');
   alertEl.innerHTML = '';
 
+  // Validaciones previas al modal
   if (!nombre) {
     alertEl.innerHTML = '<div class="alert alert-error">Por favor ingresa tu nombre completo.</div>';
+    document.getElementById('nombre').focus();
     return;
   }
-
+  if (!correo || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+    alertEl.innerHTML = '<div class="alert alert-error">Ingresa un correo electrónico válido.</div>';
+    document.getElementById('correo').focus();
+    return;
+  }
   const slots = Object.values(selectedSlots).filter(Boolean);
   if (!slots.length) {
     alertEl.innerHTML = '<div class="alert alert-error">Selecciona al menos un seminario.</div>';
     return;
   }
 
+  // Mostrar modal
+  document.getElementById('modal-confirm').classList.add('show');
+}
+
+function cerrarModal() {
+  document.getElementById('modal-confirm').classList.remove('show');
+}
+
+async function confirmarRegistro() {
+  cerrarModal();
+  const nombre = document.getElementById('nombre').value.trim();
+  const correo = document.getElementById('correo').value.trim().toLowerCase();
+  const slots  = Object.values(selectedSlots).filter(Boolean);
+  const alertEl = document.getElementById('form-alert');
+
   document.getElementById('loading').classList.add('show');
   document.getElementById('submit-btn').disabled = true;
 
   try {
-    const data = await api({ action: 'register', nombre, slots: JSON.stringify(slots) });
+    const data = await api({
+      action: 'register',
+      nombre,
+      correo,
+      bloque: selectedDay,
+      slots: JSON.stringify(slots)
+    });
     document.getElementById('loading').classList.remove('show');
+
     if (data.ok) {
       cuposCache = null;
       mostrarExito(nombre);
     } else {
       alertEl.innerHTML = `<div class="alert alert-error">${data.error}</div>`;
       document.getElementById('submit-btn').disabled = false;
-      if ((data.error || '').includes('lleno')) { cuposCache = null; renderSlots(); }
+      if ((data.error || '').includes('lleno')) { cuposCache = null; renderSeminarios(); }
     }
   } catch(e) {
     document.getElementById('loading').classList.remove('show');
@@ -629,7 +590,6 @@ function mostrarExito(nombre) {
   document.getElementById('form-view').style.display = 'none';
   document.getElementById('success-view').style.display = 'block';
   document.getElementById('success-name').textContent = `¡Listo, ${nombre}!`;
-
   const slots = Object.values(selectedSlots).filter(Boolean);
   document.getElementById('success-ticket').innerHTML = slots.map(id => {
     const m = SLOT_META[id];
@@ -637,7 +597,7 @@ function mostrarExito(nombre) {
       <span class="ticket-dot">◆</span>
       <div>
         <div class="ticket-sem">${m.semNum}</div>
-        <div class="ticket-hora">${m.hora}</div>
+        <div class="ticket-hora">${DIAS[m.dia].icon} ${DIAS[m.dia].label} · ${m.hora}</div>
         <div class="ticket-sp">${m.speaker}</div>
       </div>
     </div>` : '';
@@ -646,15 +606,19 @@ function mostrarExito(nombre) {
 
 function nuevoRegistro() {
   selectedSlots = {};
+  selectedDay = 'sabado';
   document.getElementById('nombre').value = '';
+  document.getElementById('correo').value = '';
   document.getElementById('form-alert').innerHTML = '';
   document.getElementById('submit-btn').disabled = false;
+  document.getElementById('btn-sabado').classList.add('active');
+  document.getElementById('btn-domingo').classList.remove('active');
   document.getElementById('form-view').style.display = 'block';
   document.getElementById('success-view').style.display = 'none';
-  renderSlots();
+  renderSeminarios();
 }
 
-// ── ADMIN ──────────────────────────────────────────────────
+// ── ADMIN ─────────────────────────────────────────────
 async function adminLogin() {
   const pass = document.getElementById('admin-pass').value;
   document.getElementById('login-alert').innerHTML =
@@ -663,9 +627,10 @@ async function adminLogin() {
     const data = await api({ action: 'getList', pass });
     if (data.ok) {
       adminPass = pass;
+      domingoEnabled = data.domingo_habilitado;
       document.getElementById('admin-login-view').style.display = 'none';
       document.getElementById('admin-panel').style.display = 'block';
-      renderAdmin(data.registros);
+      renderAdmin(data.registros, data.domingo_habilitado);
     } else {
       document.getElementById('login-alert').innerHTML =
         `<div class="alert alert-error">${data.error}</div>`;
@@ -676,50 +641,70 @@ async function adminLogin() {
   }
 }
 
-function renderAdmin(registros) {
+function renderAdmin(registros, domingoOn) {
+  // Segmentar
   const seg = {};
-  SEMINARIOS.forEach(s => {
-    seg[s.id] = { meta: s, speakers: {} };
-    SPEAKERS.forEach(sp => seg[s.id].speakers[sp] = []);
-  });
+  BLOQUES.forEach(s => { seg[s.id] = { meta: s, speakers: {} }; SPEAKERS.forEach(sp => seg[s.id].speakers[sp] = []); });
   registros.forEach(r => r.slots.forEach(id => {
-    const m = SLOT_META[id];
-    if (m) seg[m.semId].speakers[m.speaker].push(r);
+    const m = SLOT_META[id]; if (m) seg[m.semId].speakers[m.speaker].push(r);
   }));
 
-  let html = `<button class="export-btn" onclick="exportExcel()">⬇ Descargar lista en Excel (.xlsx)</button>`;
+  // Toggle domingo
+  let html = `<div class="domingo-toggle">
+    <div class="domingo-toggle-text">
+      <h3>🌅 Seminarios del Domingo</h3>
+      <p>Habilitar para que los asistentes puedan inscribirse</p>
+      <div class="toggle-status ${domingoOn?'toggle-on':'toggle-off'}" id="toggle-status-text">
+        ${domingoOn ? '✅ Habilitado' : '⏸ Deshabilitado'}
+      </div>
+    </div>
+    <label class="toggle-switch">
+      <input type="checkbox" id="domingo-toggle" ${domingoOn?'checked':''} onchange="toggleDomingo(this.checked)"/>
+      <span class="toggle-slider"></span>
+    </label>
+  </div>`;
 
-  SEMINARIOS.forEach(s => {
-    let total = SPEAKERS.reduce((a, sp) => a + seg[s.id].speakers[sp].length, 0);
+  html += `<button class="export-btn" onclick="exportExcel()">⬇ Descargar lista en Excel (.xlsx)</button>`;
+
+  ['sabado','domingo'].forEach(dia => {
+    const bloquesDia = BLOQUES.filter(b => b.dia === dia);
     html += `<div class="seg-section">
-      <div class="seg-header">
-        <div>
-          <div class="seg-header-title">${s.num}</div>
-          <div class="seg-header-hora">${s.hora}</div>
-        </div>
-        <span class="seg-header-count">${total} inscritos</span>
-      </div>`;
+      <div class="seg-day-title">${dia === 'sabado' ? '☀️ Sábado' : '🌅 Domingo'}</div>`;
 
-    SPEAKERS.forEach(sp => {
-      const lista = seg[s.id].speakers[sp];
-      html += `<div class="seg-speaker">
-        <div class="seg-speaker-title">
-          <span>${sp}</span>
-          <span style="font-weight:400;color:#889;">${lista.length}/${CAPACIDAD}</span>
+    bloquesDia.forEach(s => {
+      const total = SPEAKERS.reduce((a, sp) => a + seg[s.id].speakers[sp].length, 0);
+      html += `<div style="margin-bottom:14px;">
+        <div class="seg-header">
+          <div>
+            <div class="seg-header-title">${s.num}</div>
+            <div class="seg-header-hora">${s.hora}</div>
+          </div>
+          <span class="seg-header-count">${total} inscritos</span>
         </div>`;
-      if (!lista.length) {
-        html += '<p style="color:#bbb;font-size:0.83rem;padding:4px 0;">Sin inscritos aún.</p>';
-      } else {
-        lista.forEach((r, i) => {
-          html += `<div class="reg-item">
-            <div>
-              <div class="reg-name-text">${i+1}. ${r.nombre}</div>
-              <div class="reg-date">${r.fecha}</div>
-            </div>
-            <button class="del-btn" onclick="eliminarAdmin(${r.id})">✕ Eliminar</button>
+
+      SPEAKERS.forEach(sp => {
+        const lista = seg[s.id].speakers[sp];
+        html += `<div class="seg-speaker">
+          <div class="seg-speaker-title">
+            <span>${sp}</span>
+            <span style="font-weight:400;color:#889;">${lista.length}/${CAPACIDAD}</span>
           </div>`;
-        });
-      }
+        if (!lista.length) {
+          html += '<p style="color:#bbb;font-size:0.83rem;padding:4px 0;">Sin inscritos aún.</p>';
+        } else {
+          lista.forEach((r, i) => {
+            html += `<div class="reg-item">
+              <div>
+                <div class="reg-name-text">${i+1}. ${r.nombre}</div>
+                <div class="reg-email">${r.correo}</div>
+                <div class="reg-date">${r.fecha}</div>
+              </div>
+              <button class="del-btn" onclick="eliminarAdmin(${r.id})">✕ Eliminar</button>
+            </div>`;
+          });
+        }
+        html += '</div>';
+      });
       html += '</div>';
     });
     html += '</div>';
@@ -729,6 +714,29 @@ function renderAdmin(registros) {
   document.getElementById('admin-panel').innerHTML = html;
 }
 
+async function toggleDomingo(val) {
+  document.getElementById('toggle-status-text').textContent = '⏳ Guardando…';
+  try {
+    const data = await api({ action: 'enableDomingo', pass: adminPass, valor: val ? 'true' : 'false' });
+    if (data.ok) {
+      domingoEnabled = data.domingo_habilitado;
+      updateDomingoUI();
+      cuposCache = null;
+      document.getElementById('toggle-status-text').className =
+        `toggle-status ${domingoEnabled?'toggle-on':'toggle-off'}`;
+      document.getElementById('toggle-status-text').textContent =
+        domingoEnabled ? '✅ Habilitado' : '⏸ Deshabilitado';
+      showToast(domingoEnabled ? 'Domingo habilitado ✅' : 'Domingo deshabilitado');
+    } else {
+      showToast('Error: ' + data.error);
+      document.getElementById('domingo-toggle').checked = !val;
+    }
+  } catch(e) {
+    showToast('Error de conexión');
+    document.getElementById('domingo-toggle').checked = !val;
+  }
+}
+
 async function eliminarAdmin(id) {
   if (!confirm('¿Eliminar este registro?')) return;
   try {
@@ -736,7 +744,7 @@ async function eliminarAdmin(id) {
     if (data.ok) {
       showToast('Registro eliminado'); cuposCache = null;
       const list = await api({ action: 'getList', pass: adminPass });
-      if (list.ok) renderAdmin(list.registros);
+      if (list.ok) renderAdmin(list.registros, list.domingo_habilitado);
     } else showToast('Error: ' + data.error);
   } catch(e) { showToast('Error de conexión'); }
 }
@@ -749,7 +757,7 @@ function adminLogout() {
   document.getElementById('login-alert').innerHTML = '';
 }
 
-// ── EXPORTAR EXCEL ────────────────────────────────────────
+// ── EXCEL ─────────────────────────────────────────────
 async function exportExcel() {
   const data = await api({ action: 'getList', pass: adminPass });
   if (!data.ok) { showToast('Error al obtener datos'); return; }
@@ -760,50 +768,57 @@ async function exportExcel() {
   const semFill  = { patternType:'solid', fgColor:{rgb:'C9A84C'} };
   const semFont  = { bold:true, color:{rgb:'FFFFFF'}, name:'Arial', sz:11 };
   const altFill  = { patternType:'solid', fgColor:{rgb:'F7F3EC'} };
-  const boldFont = { bold:true, name:'Arial', sz:10 };
   const normFont = { name:'Arial', sz:10 };
+  const boldFont = { bold:true, name:'Arial', sz:10 };
   const center   = { horizontal:'center', vertical:'center' };
-  const border   = { top:{style:'thin'}, bottom:{style:'thin'}, left:{style:'thin'}, right:{style:'thin'} };
+  const brd      = { top:{style:'thin'}, bottom:{style:'thin'}, left:{style:'thin'}, right:{style:'thin'} };
 
   // Hoja 1: Lista completa
   const rows = [
     [{ v:'LISTA DE INSCRITOS — CONGRESO 2026', s:{ font:{bold:true,sz:14,name:'Arial',color:{rgb:'1A2744'}}, alignment:center } }],
     [],
     [
-      { v:'Seminario',     s:{ font:hdrFont, fill:hdrFill, alignment:center, border } },
-      { v:'Hora',          s:{ font:hdrFont, fill:hdrFill, alignment:center, border } },
-      { v:'Orador',        s:{ font:hdrFont, fill:hdrFill, border } },
-      { v:'#',             s:{ font:hdrFont, fill:hdrFill, alignment:center, border } },
-      { v:'Nombre',        s:{ font:hdrFont, fill:hdrFill, border } },
-      { v:'Fecha Registro',s:{ font:hdrFont, fill:hdrFill, border } },
+      {v:'Día',           s:{font:hdrFont,fill:hdrFill,alignment:center,border:brd}},
+      {v:'Seminario',     s:{font:hdrFont,fill:hdrFill,alignment:center,border:brd}},
+      {v:'Hora',          s:{font:hdrFont,fill:hdrFill,alignment:center,border:brd}},
+      {v:'Orador',        s:{font:hdrFont,fill:hdrFill,border:brd}},
+      {v:'#',             s:{font:hdrFont,fill:hdrFill,alignment:center,border:brd}},
+      {v:'Nombre',        s:{font:hdrFont,fill:hdrFill,border:brd}},
+      {v:'Correo',        s:{font:hdrFont,fill:hdrFill,border:brd}},
+      {v:'Fecha Registro',s:{font:hdrFont,fill:hdrFill,border:brd}},
     ]
   ];
 
-  SEMINARIOS.forEach(s => {
+  BLOQUES.forEach(s => {
     let firstSem = true;
     SPEAKERS.forEach(sp => {
       const id = slotId(s.id, sp);
       const lista = data.registros.filter(r => r.slots.includes(id));
+      const diaLabel = s.dia === 'sabado' ? 'Sábado' : 'Domingo';
       if (!lista.length) {
         rows.push([
-          { v: firstSem ? s.num  : '', s:{ font:boldFont, fill:semFill, border, alignment:center } },
-          { v: firstSem ? s.hora : '', s:{ font:boldFont, fill:semFill, border, alignment:center } },
-          { v: sp, s:{ font:boldFont, border } },
-          { v:'—', s:{ font:normFont, border, alignment:center } },
-          { v:'Sin inscritos', s:{ font:{italic:true,color:{rgb:'AAAAAA'},name:'Arial',sz:10}, border } },
-          { v:'', s:{ border } },
+          {v: firstSem ? diaLabel : '', s:{font:boldFont,fill:semFill,border:brd,alignment:center}},
+          {v: firstSem ? s.num  : '', s:{font:boldFont,fill:semFill,border:brd,alignment:center}},
+          {v: firstSem ? s.hora : '', s:{font:boldFont,fill:semFill,border:brd,alignment:center}},
+          {v: sp, s:{font:boldFont,border:brd}},
+          {v:'—', s:{font:normFont,border:brd,alignment:center}},
+          {v:'Sin inscritos', s:{font:{italic:true,color:{rgb:'AAAAAA'},name:'Arial',sz:10},border:brd}},
+          {v:'', s:{border:brd}},
+          {v:'', s:{border:brd}},
         ]);
         firstSem = false;
       } else {
-        lista.forEach((r, i) => {
+        lista.forEach((r,i) => {
           const f = i%2!==0 ? {fill:altFill} : {};
           rows.push([
-            { v: firstSem&&i===0 ? s.num  : '', s:{ font:boldFont, fill:semFill, border, alignment:center } },
-            { v: firstSem&&i===0 ? s.hora : '', s:{ font:boldFont, fill:semFill, border, alignment:center } },
-            { v: i===0 ? sp : '', s:{ font:boldFont, border } },
-            { v: i+1,     s:{ font:normFont, border, alignment:center, ...f } },
-            { v: r.nombre,s:{ font:normFont, border, ...f } },
-            { v: r.fecha, s:{ font:normFont, border, ...f } },
+            {v: firstSem&&i===0 ? diaLabel : '', s:{font:boldFont,fill:semFill,border:brd,alignment:center}},
+            {v: firstSem&&i===0 ? s.num  : '', s:{font:boldFont,fill:semFill,border:brd,alignment:center}},
+            {v: firstSem&&i===0 ? s.hora : '', s:{font:boldFont,fill:semFill,border:brd,alignment:center}},
+            {v: i===0 ? sp : '', s:{font:boldFont,border:brd}},
+            {v: i+1,      s:{font:normFont,border:brd,alignment:center,...f}},
+            {v: r.nombre, s:{font:normFont,border:brd,...f}},
+            {v: r.correo, s:{font:normFont,border:brd,...f}},
+            {v: r.fecha,  s:{font:normFont,border:brd,...f}},
           ]);
         });
         firstSem = false;
@@ -812,36 +827,36 @@ async function exportExcel() {
   });
 
   const ws1 = XLSX.utils.aoa_to_sheet(rows);
-  ws1['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:5} }];
-  ws1['!cols'] = [{wch:14},{wch:12},{wch:24},{wch:5},{wch:32},{wch:20}];
+  ws1['!merges'] = [{s:{r:0,c:0},e:{r:0,c:7}}];
+  ws1['!cols'] = [{wch:10},{wch:13},{wch:12},{wch:24},{wch:4},{wch:28},{wch:28},{wch:20}];
   XLSX.utils.book_append_sheet(wb, ws1, 'Lista Completa');
 
   // Hoja por seminario
-  SEMINARIOS.forEach(s => {
+  BLOQUES.forEach(s => {
     const sRows = [
-      [{ v:`${s.num.toUpperCase()} · ${s.hora}`, s:{ font:{bold:true,sz:13,name:'Arial',color:{rgb:'1A2744'}}, alignment:center } }],
+      [{v:`${s.num.toUpperCase()} · ${s.hora} (${s.dia==='sabado'?'Sábado':'Domingo'})`, s:{font:{bold:true,sz:12,name:'Arial',color:{rgb:'1A2744'}},alignment:center}}],
       [],
     ];
     SPEAKERS.forEach(sp => {
       const id = slotId(s.id, sp);
       const lista = data.registros.filter(r => r.slots.includes(id));
       sRows.push(
-        [{ v:sp, s:{font:semFont,fill:semFill,border} }, { v:`${lista.length}/40 inscritos`, s:{font:semFont,fill:semFill,border,alignment:center} }, {v:'',s:{fill:semFill}}],
-        [{ v:'#', s:{font:hdrFont,fill:hdrFill,border,alignment:center} }, { v:'Nombre', s:{font:hdrFont,fill:hdrFill,border} }, { v:'Fecha', s:{font:hdrFont,fill:hdrFill,border} }]
+        [{v:sp,s:{font:semFont,fill:semFill,border:brd}},{v:`${lista.length}/40`,s:{font:semFont,fill:semFill,border:brd,alignment:center}},{v:'',s:{fill:semFill}},{v:'',s:{fill:semFill}}],
+        [{v:'#',s:{font:hdrFont,fill:hdrFill,border:brd,alignment:center}},{v:'Nombre',s:{font:hdrFont,fill:hdrFill,border:brd}},{v:'Correo',s:{font:hdrFont,fill:hdrFill,border:brd}},{v:'Fecha',s:{font:hdrFont,fill:hdrFill,border:brd}}]
       );
       if (!lista.length) {
-        sRows.push([{v:'—',s:{font:normFont,border,alignment:center}},{v:'Sin inscritos aún',s:{font:{italic:true,color:{rgb:'AAAAAA'},name:'Arial',sz:10},border}},{v:'',s:{border}}]);
+        sRows.push([{v:'—',s:{font:normFont,border:brd,alignment:center}},{v:'Sin inscritos',s:{font:{italic:true,color:{rgb:'AAAAAA'},name:'Arial',sz:10},border:brd}},{v:'',s:{border:brd}},{v:'',s:{border:brd}}]);
       } else {
         lista.forEach((r,i) => {
           const f = i%2!==0?{fill:altFill}:{};
-          sRows.push([{v:i+1,s:{font:normFont,border,alignment:center,...f}},{v:r.nombre,s:{font:normFont,border,...f}},{v:r.fecha,s:{font:normFont,border,...f}}]);
+          sRows.push([{v:i+1,s:{font:normFont,border:brd,alignment:center,...f}},{v:r.nombre,s:{font:normFont,border:brd,...f}},{v:r.correo,s:{font:normFont,border:brd,...f}},{v:r.fecha,s:{font:normFont,border:brd,...f}}]);
         });
       }
       sRows.push([]);
     });
     const ws = XLSX.utils.aoa_to_sheet(sRows);
-    ws['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:2} }];
-    ws['!cols'] = [{wch:5},{wch:32},{wch:20}];
+    ws['!merges'] = [{s:{r:0,c:0},e:{r:0,c:3}}];
+    ws['!cols'] = [{wch:4},{wch:28},{wch:28},{wch:20}];
     XLSX.utils.book_append_sheet(wb, ws, s.num);
   });
 
@@ -849,7 +864,7 @@ async function exportExcel() {
   showToast('Descargando Excel…');
 }
 
-// ── TABS ──────────────────────────────────────────────────
+// ── TABS ──────────────────────────────────────────────
 function showTab(tab, btn) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -864,8 +879,11 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-// ── INIT ──────────────────────────────────────────────────
-renderSlots();
+// ── INIT ──────────────────────────────────────────────
+(async () => {
+  const data = await loadCupos();
+  await renderSeminarios();
+})();
 </script>
 </body>
 </html>
