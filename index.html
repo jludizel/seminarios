@@ -543,6 +543,15 @@ function pedirConfirmacion() {
     return;
   }
 
+  const bloquesDia = BLOQUES.filter(b => b.dia === selectedDay);
+  const bloquesIncompletos = bloquesDia.filter(b => !selectedSlots[b.id]);
+
+  if (bloquesIncompletos.length > 0) {
+    const nombres = bloquesIncompletos.map(b => `${b.num} (${b.hora})`).join(' y ');
+    alertEl.innerHTML = `<div class="alert alert-error">Debes elegir un orador en todos los bloques. Te falta: <strong>${nombres}</strong>.</div>`;
+    return;
+  }
+
   // Mostrar modal
   document.getElementById('modal-confirm').classList.add('show');
 }
@@ -628,6 +637,7 @@ async function adminLogin() {
     if (data.ok) {
       adminPass = pass;
       domingoEnabled = data.domingo_habilitado;
+      updateDomingoUI();
       document.getElementById('admin-login-view').style.display = 'none';
       document.getElementById('admin-panel').style.display = 'block';
       renderAdmin(data.registros, data.domingo_habilitado);
