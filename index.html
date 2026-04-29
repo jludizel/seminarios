@@ -474,6 +474,24 @@ function updateDayUI() {
 // ── RENDER SEMINARIOS ─────────────────────────────────
 async function renderSeminarios() {
   const container = document.getElementById('seminarios-container');
+
+  // Verificar si el día actual está habilitado
+  if (selectedDay === 'sabado' && !sabadoEnabled) {
+    container.innerHTML = `<div class="day-locked">
+      <div class="day-locked-icon">🔒</div>
+      <h3>Inscripciones cerradas</h3>
+      <p>Los seminarios del sábado no están disponibles en este momento.</p>
+    </div>`;
+    return;
+  }
+  if (selectedDay === 'domingo' && !domingoEnabled) {
+    container.innerHTML = `<div class="day-locked">
+      <div class="day-locked-icon">🔒</div>
+      <h3>Inscripciones cerradas</h3>
+      <p>Los seminarios del domingo no están disponibles en este momento.</p>
+    </div>`;
+    return;
+  }
   const cupos = await loadCupos();
   const bloquesDia = BLOQUES.filter(b => b.dia === selectedDay);
   let html = '';
@@ -530,10 +548,21 @@ function toggleRadio(semId, id, lleno) {
 
 // ── CONFIRMACIÓN ──────────────────────────────────────
 function pedirConfirmacion() {
-  const nombre = document.getElementById('nombre').value.trim();
-  const correo = document.getElementById('correo').value.trim();
   const alertEl = document.getElementById('form-alert');
   alertEl.innerHTML = '';
+
+  // Verificar que el día siga habilitado al momento de confirmar
+  if (selectedDay === 'sabado' && !sabadoEnabled) {
+    alertEl.innerHTML = '<div class="alert alert-error">Las inscripciones del sábado no están disponibles.</div>';
+    return;
+  }
+  if (selectedDay === 'domingo' && !domingoEnabled) {
+    alertEl.innerHTML = '<div class="alert alert-error">Las inscripciones del domingo no están disponibles.</div>';
+    return;
+  }
+
+  const nombre = document.getElementById('nombre').value.trim();
+  const correo = document.getElementById('correo').value.trim();
 
   // Validaciones previas al modal
   if (!nombre) {
