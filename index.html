@@ -369,8 +369,9 @@ BLOQUES.forEach(s => SPEAKERS.forEach(sp => {
 // ── STATE ─────────────────────────────────────────────
 let cuposCache       = null;
 let domingoEnabled   = false;
+let sabadoEnabled    = true;
 let selectedDay      = 'sabado';
-let selectedSlots    = {};   // semId → slotId
+let selectedSlots    = {};
 let adminPass        = '';
 
 // ── API ───────────────────────────────────────────────
@@ -389,8 +390,9 @@ async function loadCupos(force = false) {
     if (data.ok) {
       cuposCache = data.cupos;
       domingoEnabled = data.domingo_habilitado;
-      updateDomingoUI();
-      renderCuposTab(data.cupos, domingoEnabled);
+      sabadoEnabled  = data.sabado_habilitado !== false; // true por defecto
+      updateDayUI();
+      renderCuposTab(data.cupos, domingoEnabled, sabadoEnabled);
       return data.cupos;
     }
   } catch(e) {}
@@ -399,7 +401,7 @@ async function loadCupos(force = false) {
   return cuposCache || {};
 }
 
-function renderCuposTab(cupos, domingoOn) {
+function renderCuposTab(cupos, domingoOn, sabadoOn) {
   let llenos = 0, totalIns = 0;
   Object.values(cupos).forEach(v => { totalIns += (CAPACIDAD - v); if (v === 0) llenos++; });
 
@@ -411,7 +413,7 @@ function renderCuposTab(cupos, domingoOn) {
 
   ['sabado','domingo'].forEach(dia => {
     const bloquesDia = BLOQUES.filter(b => b.dia === dia);
-    const locked = dia === 'domingo' && !domingoOn;
+    const locked = (dia === 'domingo' && !domingoOn) || (dia === 'sabado' && !sabadoOn);
     html += `<div class="cupos-day">
       <div class="cupos-day-title">${dia === 'sabado' ? '☀️ Sábado' : '🌅 Domingo'}${locked ? ' <span style="font-size:0.8rem;color:#aaa;font-family:sans-serif;">(por habilitar)</span>' : ''}</div>`;
     bloquesDia.forEach(s => {
@@ -445,6 +447,10 @@ function renderCuposTab(cupos, domingoOn) {
 
 // ── SELECCIÓN DE DÍA ──────────────────────────────────
 function selectDay(dia) {
+  if (dia === 'sabado' && !sabadoEnabled) {
+    showToast('Los seminarios del sábado no están habilitados');
+    return;
+  }
   if (dia === 'domingo' && !domingoEnabled) {
     showToast('Los seminarios del domingo aún no están habilitados');
     return;
@@ -456,10 +462,13 @@ function selectDay(dia) {
   renderSeminarios();
 }
 
-function updateDomingoUI() {
-  const btn = document.getElementById('btn-domingo');
-  if (!domingoEnabled) btn.classList.add('locked');
-  else btn.classList.remove('locked');
+function updateDayUI() {
+  const btnSab = document.getElementById('btn-sabado');
+  const btnDom = document.getElementById('btn-domingo');
+  if (!sabadoEnabled) btnSab.classList.add('locked');
+  else btnSab.classList.remove('locked');
+  if (!domingoEnabled) btnDom.classList.add('locked');
+  else btnDom.classList.remove('locked');
 }
 
 // ── RENDER SEMINARIOS ─────────────────────────────────
@@ -637,10 +646,11 @@ async function adminLogin() {
     if (data.ok) {
       adminPass = pass;
       domingoEnabled = data.domingo_habilitado;
-      updateDomingoUI();
+      sabadoEnabled  = data.sabado_habilitado !== false;
+      updateDayUI();
       document.getElementById('admin-login-view').style.display = 'none';
       document.getElementById('admin-panel').style.display = 'block';
-      renderAdmin(data.registros, data.domingo_habilitado);
+      renderAdmin(data.registros, data.domingo_habilitado, data.sabado_habilitado !== false);
     } else {
       document.getElementById('login-alert').innerHTML =
         `<div class="alert alert-error">${data.error}</div>`;
@@ -651,7 +661,7 @@ async function adminLogin() {
   }
 }
 
-function renderAdmin(registros, domingoOn) {
+function renderAdmin(registros, domingoOn, sabadoOn) {
   // Segmentar
   const seg = {};
   BLOQUES.forEach(s => { seg[s.id] = { meta: s, speakers: {} }; SPEAKERS.forEach(sp => seg[s.id].speakers[sp] = []); });
@@ -659,12 +669,26 @@ function renderAdmin(registros, domingoOn) {
     const m = SLOT_META[id]; if (m) seg[m.semId].speakers[m.speaker].push(r);
   }));
 
-  // Toggle domingo
-  let html = `<div class="domingo-toggle">
+  // Toggles de días
+  let html = `
+  <div class="domingo-toggle">
+    <div class="domingo-toggle-text">
+      <h3>☀️ Seminarios del Sábado</h3>
+      <p>Habilitar inscripciones para el día sábado</p>
+      <div class="toggle-status ${sabadoOn?'toggle-on':'toggle-off'}" id="toggle-status-sabado">
+        ${sabadoOn ? '✅ Habilitado' : '⏸ Deshabilitado'}
+      </div>
+    </div>
+    <label class="toggle-switch">
+      <input type="checkbox" id="sabado-toggle" ${sabadoOn?'checked':''} onchange="toggleSabado(this.checked)"/>
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="domingo-toggle">
     <div class="domingo-toggle-text">
       <h3>🌅 Seminarios del Domingo</h3>
-      <p>Habilitar para que los asistentes puedan inscribirse</p>
-      <div class="toggle-status ${domingoOn?'toggle-on':'toggle-off'}" id="toggle-status-text">
+      <p>Habilitar inscripciones para el día domingo</p>
+      <div class="toggle-status ${domingoOn?'toggle-on':'toggle-off'}" id="toggle-status-domingo">
         ${domingoOn ? '✅ Habilitado' : '⏸ Deshabilitado'}
       </div>
     </div>
@@ -724,18 +748,37 @@ function renderAdmin(registros, domingoOn) {
   document.getElementById('admin-panel').innerHTML = html;
 }
 
+async function toggleSabado(val) {
+  document.getElementById('toggle-status-sabado').textContent = '⏳ Guardando…';
+  try {
+    const data = await api({ action: 'enableSabado', pass: adminPass, valor: val ? 'true' : 'false' });
+    if (data.ok) {
+      sabadoEnabled = data.sabado_habilitado;
+      updateDayUI();
+      cuposCache = null;
+      document.getElementById('toggle-status-sabado').className = `toggle-status ${sabadoEnabled?'toggle-on':'toggle-off'}`;
+      document.getElementById('toggle-status-sabado').textContent = sabadoEnabled ? '✅ Habilitado' : '⏸ Deshabilitado';
+      showToast(sabadoEnabled ? 'Sábado habilitado ✅' : 'Sábado deshabilitado');
+    } else {
+      showToast('Error: ' + data.error);
+      document.getElementById('sabado-toggle').checked = !val;
+    }
+  } catch(e) {
+    showToast('Error de conexión');
+    document.getElementById('sabado-toggle').checked = !val;
+  }
+}
+
 async function toggleDomingo(val) {
-  document.getElementById('toggle-status-text').textContent = '⏳ Guardando…';
+  document.getElementById('toggle-status-domingo').textContent = '⏳ Guardando…';
   try {
     const data = await api({ action: 'enableDomingo', pass: adminPass, valor: val ? 'true' : 'false' });
     if (data.ok) {
       domingoEnabled = data.domingo_habilitado;
-      updateDomingoUI();
+      updateDayUI();
       cuposCache = null;
-      document.getElementById('toggle-status-text').className =
-        `toggle-status ${domingoEnabled?'toggle-on':'toggle-off'}`;
-      document.getElementById('toggle-status-text').textContent =
-        domingoEnabled ? '✅ Habilitado' : '⏸ Deshabilitado';
+      document.getElementById('toggle-status-domingo').className = `toggle-status ${domingoEnabled?'toggle-on':'toggle-off'}`;
+      document.getElementById('toggle-status-domingo').textContent = domingoEnabled ? '✅ Habilitado' : '⏸ Deshabilitado';
       showToast(domingoEnabled ? 'Domingo habilitado ✅' : 'Domingo deshabilitado');
     } else {
       showToast('Error: ' + data.error);
@@ -754,7 +797,7 @@ async function eliminarAdmin(id) {
     if (data.ok) {
       showToast('Registro eliminado'); cuposCache = null;
       const list = await api({ action: 'getList', pass: adminPass });
-      if (list.ok) renderAdmin(list.registros, list.domingo_habilitado);
+      if (list.ok) renderAdmin(list.registros, list.domingo_habilitado, list.sabado_habilitado !== false);
     } else showToast('Error: ' + data.error);
   } catch(e) { showToast('Error de conexión'); }
 }
