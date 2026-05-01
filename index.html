@@ -359,7 +359,13 @@ const BLOQUES = [
   { id: 'S4', num: 'Seminario 4', hora: '11:25 a.m.', dia: 'domingo' },
 ];
 const SPEAKERS = ['Scott Mayer', 'Sebastien Braxton', 'Manuel Montero'];
-const CAPACIDAD = 40;
+const CAPACIDAD_DEFAULT = 40;
+const CAPACIDAD_POR_SPEAKER = {
+  'Scott Mayer':       45,
+  'Sebastien Braxton': 45,
+  'Manuel Montero':    40,
+};
+function getCap(sp) { return CAPACIDAD_POR_SPEAKER[sp] || CAPACIDAD_DEFAULT; }
 
 // Título de cada charla: TITULOS[semIndex][speaker]
 const TITULOS = {
@@ -429,7 +435,11 @@ async function loadCupos(force = false) {
 
 function renderCuposTab(cupos, domingoOn, sabadoOn) {
   let llenos = 0, totalIns = 0;
-  Object.values(cupos).forEach(v => { totalIns += (CAPACIDAD - v); if (v === 0) llenos++; });
+  Object.entries(cupos).forEach(([id, v]) => {
+    const sp = SPEAKERS.find(s => id.includes(s.replace(/\s/g,'')));
+    const cap = sp ? getCap(sp) : CAPACIDAD_DEFAULT;
+    totalIns += (cap - v); if (v === 0) llenos++;
+  });
 
   let html = `<div class="stats-grid">
     <div class="stat-box"><div class="stat-num">${llenos}</div><div class="stat-lbl">Llenos</div></div>
@@ -451,9 +461,10 @@ function renderCuposTab(cupos, domingoOn, sabadoOn) {
         <div class="cupos-body">`;
       SPEAKERS.forEach(sp => {
         const id = slotId(s.id, sp);
-        const libres = cupos[id] ?? CAPACIDAD;
-        const ocu = CAPACIDAD - libres;
-        const pct = Math.min(100, ocu / CAPACIDAD * 100);
+        const cap = getCap(sp);
+        const libres = cupos[id] ?? cap;
+        const ocu = cap - libres;
+        const pct = Math.min(100, ocu / cap * 100);
         const lleno = libres === 0, warn = libres <= 8 && !lleno;
         html += `<div class="cupo-row">
           <div class="cupo-row-top">
@@ -536,11 +547,12 @@ async function renderSeminarios() {
 
     SPEAKERS.forEach(sp => {
       const id = slotId(s.id, sp);
-      const libres = cupos[id] ?? CAPACIDAD;
-      const ocu = CAPACIDAD - libres;
+      const cap = getCap(sp);
+      const libres = cupos[id] ?? cap;
+      const ocu = cap - libres;
       const lleno = libres === 0, warn = libres <= 8 && !lleno;
       const sel = selId === id;
-      const pct = Math.min(100, ocu / CAPACIDAD * 100);
+      const pct = Math.min(100, ocu / cap * 100);
       const titulo = TITULOS[s.id]?.[sp] || '';
       html += `<div class="slot-card ${sel?'selected':''} ${lleno?'lleno':''}"
                     onclick="toggleRadio('${s.id}','${id}',${lleno})">
@@ -780,7 +792,7 @@ function renderAdmin(registros, domingoOn, sabadoOn) {
         html += `<div class="seg-speaker">
           <div class="seg-speaker-title">
             <span>${sp}</span>
-            <span style="font-weight:400;color:#889;">${lista.length}/${CAPACIDAD}</span>
+            <span style="font-weight:400;color:#889;">${lista.length}/${getCap(sp)}</span>
           </div>`;
         if (!lista.length) {
           html += '<p style="color:#bbb;font-size:0.83rem;padding:4px 0;">Sin inscritos aún.</p>';
